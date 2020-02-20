@@ -9,8 +9,10 @@ use Seriti\Tools\URL_CLEAN_LAST;
 use Seriti\Tools\Secure;
 use Seriti\Tools\Menu;
 
-//NB: only require if website has shopping capabilities
+//NB: only require if website has shopping or auction capabilities
 use App\Shop\Helpers AS ShopHelpers;
+use App\Auction\Helpers AS AuctionHelpers;
+
 
 class ConfigPublic
 {
