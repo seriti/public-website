@@ -65,8 +65,8 @@ class SetupData extends SetupModuledata
 
        
         //initialisation
-        $this->addInitialSql('INSERT INTO `TABLE_PREFIXpage` (title,link_url,text_markdown,text_html,type_id,status) '.
-                             'VALUES("Home","home","Hello world","Hello world","STANDARD","OK")');
+        $this->addInitialSql('INSERT INTO `TABLE_PREFIXpage` (title,link_url,text_markdown,text_html,type_id,page_access,status) '.
+                             'VALUES("Home","home","Hello world","Hello world","STANDARD","NONE",OK")');
         
 
         //updates use time stamp in ['YYYY-MM-DD HH:MM'] format, must be unique and sequential

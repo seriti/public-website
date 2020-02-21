@@ -20,7 +20,12 @@ use Seriti\Tools\BASE_TEMPLATE;
 use Seriti\Tools\BASE_URL;
 
 use App\Shop\ProductList;
-use App\Shop\AccountDashboard;
+//use App\Shop\AccountDashboard;
+
+use App\Auction\LotList;
+use App\Auction\AccountDashboard;
+
+
 use App\Website\RegisterWizard;
 
 use Psr\Container\ContainerInterface;
@@ -48,6 +53,8 @@ class Website
     //relative to http root
     protected $image_dir = BASE_URL.BASE_UPLOAD_WWW;
     
+    //store insert content/classes for repeat use on a single page
+    protected $insert = [];
 
     public function __construct(DbInterface $db, ContainerInterface $container) 
     {
@@ -205,8 +212,130 @@ class Website
         return $html;
     }
 
+    protected function getInsertContent($insert_mask) 
+    {
+        $insert_html = '';
+        //strip {} brackets from mask 
+        $insert_mask = substr($insert_mask,1,-1);
+        $mask_arr = explode(':',$insert_mask);
+
+        //{INSERT:AUCTION_XXX:ID}
+        if(strpos($mask_arr[1],'AUCTION') !== false) {
+            $auction_id = $mask_arr[2];
+            $key = 'AUCTION'.$auction_id;
+            if(!isset($this->insert[$key])) {
+                $table_name = 'auc_lot';
+                $this->insert[$key] = new LotList($this->db,$this->container,$table_name);
+                $this->insert[$key]->setup(['auction_id'=>$auction_id]);
+            }
+            
+            if($mask_arr[1] === 'AUCTION_CATEGORY') $insert_html = $this->insert[$key]->viewSearchIndex('SELECT','category_id',$_POST);
+            if($mask_arr[1] === 'AUCTION_LOTS') $insert_html = $this->insert[$key]->processList();
+            if($mask_arr[1] === 'AUCTION_NAME') $insert_html = $this->insert[$key]->getAuction()['name'];  
+        }
+
+        //{INSERT:SHOP_XXX:CAT}
+        if(strpos($mask_arr[1],'SHOP') !== false) {
+            if(count($mask_arr) > 2) {
+                $category_id = $mask_arr[2];
+            } else {
+                $category_id = '';
+            }    
+            $key = 'SHOP'.$category_id;
+            if(!isset($this->insert[$key])) {
+                $table_name = 'shp_product';
+                $this->insert[$key] = new ProductList($this->db,$this->container,$table_name);
+                $this->insert[$key]->setup([]);
+            }
+            
+            if($mask_arr[1] === 'SHOP_CATEGORY') $insert_html = $this->insert[$key]->viewSearchIndex('SELECT','category_id',$_POST);
+            if($mask_arr[1] === 'SHOP_PRODUCTS') $insert_html = $this->insert[$key]->processList();
+        }
+
+        //{INSERT:ACCOUNT_XXX}
+        if(strpos($mask_arr[1],'ACCOUNT') !== false) {
+            $key = 'ACCOUNT';
+            if(!isset($this->insert[$key])) {
+                $this->insert[$key] = new AccountDashboard($this->db,$this->container);
+                $this->insert[$key]->setup([]);
+            }
+            
+            if($mask_arr[1] === 'ACCOUNT_DASHBOARD') $insert_html = $this->insert[$key]->viewBlocks();;
+        }
+
+        if($mask_arr[1] === 'REGISTER_WIZARD') {
+            $cache = $this->getContainer('cache');
+            $user = $this->getContainer('user');
+            $user_specific = false;
+            $cache_name = 'Register_wizard'.$user->getTempToken();
+            $cache->setCache($cache_name,$user_specific);
+
+            $wizard_template = new Template(BASE_TEMPLATE);
+            $wizard = new RegisterWizard($this->db,$this->container,$cache,$wizard_template);
+            $wizard->setup();
+            
+            $insert_html = $wizard->process();
+        }
+        
+        return $insert_html;
+    }    
+
     protected function insertPageContent(&$page = []) 
     {
+
+        while(strpos($page['title'],'{INSERT:') !== false) {
+            $pos1 = strpos($page['title'],'{INSERT:');
+            $pos2 = strpos($page['title'],'}',$pos1); 
+            $replace_str = substr($page['title'],$pos1,($pos2-$pos1+1));
+
+            $insert_html = $this->getInsertContent($replace_str); 
+            $page['title'] = str_replace($replace_str,$insert_html,$page['title']);
+        }
+
+        while(strpos($page['text_html'],'{INSERT:') !== false) {
+            $pos1 = strpos($page['text_html'],'{INSERT:');
+            $pos2 = strpos($page['text_html'],'}',$pos1); 
+            $replace_str = substr($page['text_html'],$pos1,($pos2-$pos1+1));
+
+            $insert_html = $this->getInsertContent($replace_str); 
+            $page['text_html'] = str_replace($replace_str,$insert_html,$page['text_html']);
+        }
+
+        //NB INSERT:AUCTION_LOTS:X where X is auction ID
+        /*
+        if(strpos($page['text_html'],'{INSERT:AUCTION_LOTS:') !== false) {
+
+            $pos1 = strpos($page['text_html'],'{INSERT:AUCTION_LOTS:');
+            $pos2 = strpos($page['text_html'],'}',$pos1);
+            $replace_str = substr($page['text_html'],$pos1,($pos2-$pos1+1));
+            $arr = explode(':',$replace_str);
+            $auction_id = substr($arr[2],0,-1);
+            if(!is_numeric($auction_id)) {
+                $this->addError('Insert Auction ID['.$auction_id.'] is not valid!');
+            } else {
+                $table_name = 'auc_lot';
+                $list = new LotList($this->db,$this->container,$table_name);
+                $param=['auction_id'=>$auction_id];
+                $list->setup($param);
+                $auction = $list->getAuction();
+            }    
+            
+            
+            if(strpos($page['title'],'{INSERT:AUCTION_CATEGORY}') !== false) {
+                $insert_html = $list->viewSearchIndex('SELECT','category_id',$_POST);
+                $page['title'] = str_replace('{INSERT:AUCTION_CATEGORY}',$insert_html,$page['title']);
+            } 
+
+            if(strpos($page['title'],'{INSERT:AUCTION_NAME}') !== false) {
+                $page['title'] = str_replace('{INSERT:AUCTION_NAME}',$auction['name'],$page['title']);
+            }    
+            
+            if(strpos($page['text_html'],'{INSERT:AUCTION_LOTS:') !== false) {
+                $insert_html = $list->processList();
+                $page['text_html'] = str_replace($replace_str,$insert_html,$page['text_html']);
+            }
+        }
+
         if(strpos($page['title'],'{INSERT:SHOP_CATEGORY}') !== false or strpos($page['text_html'],'{INSERT:SHOP_PRODUCTS}') !== false) {
 
             $table_name = 'shp_product';
@@ -252,7 +381,7 @@ class Website
 
             $page['text_html'] = str_replace('{INSERT:REGISTER_WIZARD}',$insert_html,$page['text_html']);
         } 
-
+        */
 
     }
 

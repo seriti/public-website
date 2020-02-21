@@ -36,7 +36,9 @@ class ConfigPublic
      */
     public function __invoke($request, $response, $next)
     {
-        $shop_setup = true;     
+        $shop_setup = false;
+        $auction_setup = false;
+
         $user = $this->container->user;
         $db = $this->container->mysql;
 
@@ -46,6 +48,11 @@ class ConfigPublic
         if($shop_setup) {
            $module_shop = $this->container->config->get('module','shop');
            define('TABLE_PREFIX_SHOP',$module_shop['table_prefix']); 
+        }
+
+        if($auction_setup) {
+           $module_auction = $this->container->config->get('module','auction');
+           define('TABLE_PREFIX_AUCTION',$module_auction['table_prefix']); 
         }
         
         $route_root = $module['route_root_page'];
@@ -64,7 +71,8 @@ class ConfigPublic
         $redirect_route = $route_root.'home'; //could leave out 'home' and redirect in src/routes.php 
         $minimum_level = 'VIEW';
         $zone = 'PUBLIC';
-        //will return false unless a user is logged in with access >= minimum level and zone = ALL or PUBLIC and status <> HIDE
+
+        //will return false unless a user is logged in, and zone = ALL or PUBLIC and status <> HIDE
         $valid = $user->checkAccessRights($zone);
         
         //NB: this code is processed before LogoutController called 
@@ -102,7 +110,19 @@ class ConfigPublic
                     $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
                 }    
             }
-        }    
+        } 
+
+        if($auction_setup) {
+            $temp_token = $user->getTempToken(false);
+            if($temp_token !== '') {
+                $cart = AuctionHelpers::getCart($db,TABLE_PREFIX_AUCTION,$temp_token);
+                if($cart !==0 ) {
+                    $no_items = '';
+                    if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
+                    $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
+                }    
+            }
+        }      
         
         //menu logo, defined in setup_app.php
         if(defined('WWW_MENU_LOGO')) $logo = WWW_MENU_LOGO; else $logo = '';

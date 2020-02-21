@@ -32,7 +32,7 @@ Once you have a local copy of module code check that it has following structure:
 3.) Copy the **Website** folder and all its contents into **[directory-for-app]/app** folder.
 
 4.) Open the routes.php file and insert the **$this->group('/website', function (){}** route definition block
-within the existing  **$app->group('/admin', function () {}** code block contained in existing skeleton **[directory-for-app]/src/routes.php** file.
+within the existing  **$app->group('/admin', functio## Install the modulen () {}** code block contained in existing skeleton **[directory-for-app]/src/routes.php** file.
 
 5.) Open the setup_app.php file and  add the module config code snippet into bottom of skeleton **[directory-for-app]/src/setup_app.php** file.  
 Please check the **table_prefix** value to ensure that there will not be a clash with any existing tables in your database.
@@ -48,3 +48,12 @@ OR
 Now click link at bottom of page **Setup Database**: This will create all necessary database tables with table_prefix as defined above.  
 Thats it, you are good to go. Add some pages and images, choose a theme and menu style.
 
+## Additional website sub-modules
+
+If you are also using the following modules:
+- [public-shop](https://github.com/seriti/public-shop)
+- [public-auction](https://github.com/seriti/public-auction)
+
+Then they require activation by editing Website/configPublic.php at start of function invoke(). 
+You will see applicable variables that need to be set to true. 
+Also Website/Website.php has function getInsertContent() where you will see how page placeholders are replaced with module content
