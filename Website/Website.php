@@ -23,6 +23,8 @@ use App\Shop\ProductList;
 //use App\Shop\AccountDashboard;
 
 use App\Auction\LotList;
+use App\Auction\AuctionImageList;
+use App\Auction\AuctionDocumentList;
 use App\Auction\AccountDashboard;
 
 
@@ -223,15 +225,40 @@ class Website
         if(strpos($mask_arr[1],'AUCTION') !== false) {
             $auction_id = $mask_arr[2];
             $key = 'AUCTION'.$auction_id;
+
             if(!isset($this->insert[$key])) {
                 $table_name = 'auc_lot';
                 $this->insert[$key] = new LotList($this->db,$this->container,$table_name);
                 $this->insert[$key]->setup(['auction_id'=>$auction_id]);
             }
+
+            if($mask_arr[1] === 'AUCTION_IMAGES') {
+                $key2 = 'AUCTION'.$auction_id.'_IMG';
+
+                if(!isset($this->insert[$key2])) {
+                    $table_name = 'auc_file';
+                    $this->insert[$key2] = new AuctionImageList($this->db,$this->container,$table_name);
+                    $this->insert[$key2]->setup(['auction_id'=>$auction_id]);
+                }
+            }
+
+            if($mask_arr[1] === 'AUCTION_DOCS') {
+                $key3 = 'AUCTION'.$auction_id.'_DOC';
+
+                if(!isset($this->insert[$key2])) {
+                    $table_name = 'auc_file';
+                    $this->insert[$key3] = new AuctionDocumentList($this->db,$this->container,$table_name);
+                    $this->insert[$key3]->setup(['auction_id'=>$auction_id]);
+                }
+
+            }
             
             if($mask_arr[1] === 'AUCTION_CATEGORY') $insert_html = $this->insert[$key]->viewSearchIndex('SELECT','category_id',$_POST);
             if($mask_arr[1] === 'AUCTION_LOTS') $insert_html = $this->insert[$key]->processList();
             if($mask_arr[1] === 'AUCTION_NAME') $insert_html = $this->insert[$key]->getAuction()['name'];  
+
+            if($mask_arr[1] === 'AUCTION_IMAGES') $insert_html = $this->insert[$key2]->processUpload();
+            if($mask_arr[1] === 'AUCTION_DOCS') $insert_html = $this->insert[$key3]->processUpload();
         }
 
         //{INSERT:SHOP_XXX:CAT}

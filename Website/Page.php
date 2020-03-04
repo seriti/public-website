@@ -18,8 +18,8 @@ class Page extends Table
     //configure
     public function setup($param = []) 
     {
-        $param = ['row_name'=>'Page','col_label'=>'title'];
-        parent::setup($param);
+        $parent_param = ['row_name'=>'Page','col_label'=>'title'];
+        parent::setup($parent_param);
 
         if(isset($param['route_root_page'])) $this->route_root_page = $param['route_root_page'];
 
@@ -78,7 +78,7 @@ class Page extends Table
                                   
         $this->setupFiles(array('table'=>TABLE_PREFIX.'files','location'=>'WPF','max_no'=>100,
                                 'icon'=>'<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;manage',
-                                'list'=>false,'list_no'=>1,'storage'=>STORAGE_WWW,
+                                'list'=>true,'list_no'=>1,'storage'=>STORAGE_WWW,
                                 'link_page'=>'page_file','link_data'=>'SIMPLE','width'=>'700','height'=>'600'));
         
 

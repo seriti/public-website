@@ -18,7 +18,7 @@ class PageController
         $param = [];
 
         $module = $this->container->config->get('module','website');
-        $param['page_route_root'] = $module['route_root_page']; 
+        $param['route_root_page'] = $module['route_root_page']; 
 
         $table_name = TABLE_PREFIX.'page'; 
         $table = new Page($this->container->mysql,$this->container,$table_name);
