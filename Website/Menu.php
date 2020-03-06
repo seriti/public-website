@@ -37,7 +37,7 @@ class Menu extends Tree
                        'LINK_PAGE'=>'Link to your pages',
                        'DIVIDER'=>'Menu divider'];
 
-        $menu_types['LINK_ACCOUNT']='Link to Shop account';               
+        $menu_types['LINK_ACCOUNT']='Link to user account';               
 
 
         $menu_links = [];
