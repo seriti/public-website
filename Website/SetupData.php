@@ -8,7 +8,7 @@ class SetupData extends SetupModuledata
 
     public function setupSql()
     {
-        $this->tables = ['files','menu','page'];
+        $this->tables = ['files','menu','page','help'];
 
         $this->addCreateSql('files',
                             'CREATE TABLE `TABLE_NAME` (
@@ -46,6 +46,18 @@ class SetupData extends SetupModuledata
                               `link_mode` varchar(64) NOT NULL,
                               PRIMARY KEY (`id`)
                             ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8');
+
+        $this->addCreateSql('help',
+                            'CREATE TABLE `TABLE_NAME` (
+                              `id` INT NOT NULL AUTO_INCREMENT,
+                              `title` VARCHAR(255) NOT NULL,
+                              `text_markdown` TEXT NOT NULL,
+                              `text_html` TEXT NOT NULL,
+                              `rank` INT NOT NULL,
+                              `access` VARCHAR(64) NOT NULL,
+                              `status` VARCHAR(64) NOT NULL,
+                              PRIMARY KEY (`id`)
+                            ) ENGINE = MyISAM DEFAULT CHARSET = utf8');
 
         $this->addCreateSql('page',
                             'CREATE TABLE `TABLE_NAME` (

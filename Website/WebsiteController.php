@@ -20,7 +20,6 @@ class WebsiteController
         $this->container = $container;
     }
 
-
     public function __invoke($request, $response, $args)
     {
         $site = new Website($this->container->mysql,$this->container);

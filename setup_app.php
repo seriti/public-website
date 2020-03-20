@@ -9,7 +9,7 @@ This tells the framework about module: name, sub-memnu route list and title, dat
 $container['config']->set('module','website',['name'=>'Website',
                                              'route_root'=>'admin/website/',
                                              'route_list'=>['dashboard'=>'Dashboard','menu'=>'Menu items','page'=>'Pages',
-                                                            'setup'=>'Site setup','seo'=>'SEO Setup'],
+                                                            'setup'=>'Site setup','seo'=>'SEO Setup','help'=>'Help'],
                                              'table_prefix'=>'www_',
                                              'route_root_page'=>'public/',
                                              'route_root_account'=>'public/account/',

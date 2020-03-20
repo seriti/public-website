@@ -54,7 +54,7 @@ class Ajax
                 }  
                 break;
             case 'LINK_SYSTEM':
-                $links['public/home'] = 'Home dashboard';
+                //$links['public/home'] = 'Home dashboard';
                 $links['public/help'] = 'Help';
                 break;
             case 'LINK_ACCOUNT':

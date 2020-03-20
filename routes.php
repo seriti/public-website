@@ -16,6 +16,7 @@ $app->group('/admin', function () {
         $this->any('/page_image', \App\Website\PageImageController::class);
         $this->any('/setup', \App\Website\SiteSetupController::class);
         $this->any('/seo', \App\Website\SeoSetupController::class);
+        $this->any('/help', \App\Website\HelpController::class);
         $this->get('/setup_data', \App\Website\SetupDataController::class);
         $this->post('/ajax', \App\Website\Ajax::class);
     })->add(\App\Website\Config::class);
@@ -35,6 +36,7 @@ $app->group('/public', function () {
     $this->redirect('', '/public/home', 301);
     $this->redirect('/', 'home', 301);
  
+    $this->any('/help', \App\Website\PublicHelpController::class);
     $this->any('/register', \App\Website\RegisterWizardController::class);
     $this->any('/logout', \App\Website\LogoutController::class);
 

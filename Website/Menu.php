@@ -35,6 +35,7 @@ class Menu extends Tree
 
         $menu_types = ['TEXT'=>'PLain text placeholder',
                        'LINK_PAGE'=>'Link to your pages',
+                       'LINK_SYSTEM'=>'Link to system page',
                        'DIVIDER'=>'Menu divider'];
 
         $menu_types['LINK_ACCOUNT']='Link to user account';               
