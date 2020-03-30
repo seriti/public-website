@@ -48,8 +48,8 @@ $html .= '</div>'.
          '<div class="col-lg-6">';        
                         
 $html .= '<div class="row"><div class="col-lg-12">'.
-         '<p><b>NB1:</b> A password will be auto-generated for you!</p>'.
-         '<p><b>NB2:</b> Your email address can only be used once!</p>'.
+         '<p><b>NB1:</b> A secure password will be auto-generated and emailed to you.</p>'.
+         '<p><b>NB2:</b> Every user must have a unique email address. You cannot register twice with the same email address.</p>'.
          '</div></div>';       
         
 $html .= '</div>'.
