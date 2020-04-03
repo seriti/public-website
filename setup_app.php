@@ -6,7 +6,7 @@ add the below code snippet to the end of existing "src/setup_app.php" file.
 This tells the framework about module: name, sub-memnu route list and title, database table prefix.
 */
 
-$container['config']->set('module','website',['name'=>'Website',
+$container['config']->set('module','website',['name'=>'Website public',
                                              'route_root'=>'admin/website/',
                                              'route_list'=>['dashboard'=>'Dashboard','menu'=>'Menu items','page'=>'Pages',
                                                             'setup'=>'Site setup','seo'=>'SEO Setup','help'=>'Help'],

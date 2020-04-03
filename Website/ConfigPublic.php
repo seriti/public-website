@@ -53,6 +53,7 @@ class ConfigPublic
         if($auction_setup) {
            $module_auction = $this->container->config->get('module','auction');
            define('TABLE_PREFIX_AUCTION',$module_auction['table_prefix']); 
+           define('AUCTION_ORDER_NAME',$module_auction['labels']['order']); 
         }
         
         $route_root = $module['route_root_page'];
