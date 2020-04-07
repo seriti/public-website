@@ -36,6 +36,8 @@ class ConfigPublic
      */
     public function __invoke($request, $response, $next)
     {
+        $user_access = false;
+        //NB: user_access must be true for shop or auction to be true
         $shop_setup = false;
         $auction_setup = false;
 
@@ -73,57 +75,60 @@ class ConfigPublic
         $minimum_level = 'VIEW';
         $zone = 'PUBLIC';
 
-        //will return false unless a user is logged in, and zone = ALL or PUBLIC and status <> HIDE
-        $valid = $user->checkAccessRights($zone);
-        
-        //NB: this code is processed before LogoutController called 
-        if($valid and URL_CLEAN !== $route_root.'logout') {
-            //valid user logged in
-            $menu_options['append'] = ['/public/logout'=>'Logout']; 
+        $menu_options['append'] = [];
+        if($user_access) {
+            //will return false unless a user is logged in, and zone = ALL or PUBLIC and status <> HIDE
+            $valid = $user->checkAccessRights($zone);
+            
+            //NB: this code is processed before LogoutController called 
+            if($valid and URL_CLEAN !== $route_root.'logout') {
+                //valid user logged in
+                $menu_options['append'] = ['/public/logout'=>'Logout']; 
 
-            $db->setAuditUserId($user->getId());
-            Secure::checkReferer(BASE_URL);
-            //user access level must be valid and >= minimum level
-            $valid = $user->checkUserAccess($minimum_level);
+                $db->setAuditUserId($user->getId());
+                Secure::checkReferer(BASE_URL);
+                //user access level must be valid and >= minimum level
+                $valid = $user->checkUserAccess($minimum_level);
 
-            //check current menu route is valid for user based on menu settings
-            //NB: individual pages also have access settings as these may not be in menu
-            if($valid) $valid = $menu->checkRouteAccess(URL_CLEAN);
+                //check current menu route is valid for user based on menu settings
+                //NB: individual pages also have access settings as these may not be in menu
+                if($valid) $valid = $menu->checkRouteAccess(URL_CLEAN);
 
-            //delete user session,tokens,cookies and send to home page
-            if(!$valid) {
-                $user->manageUserAction('LOGOUT');
-                return $response->withRedirect('/'.$redirect_route);
-            }    
-        } else {
-            //no user logged in
-            $menu_options['append'] = ['/public/register'=>'Register','/login'=>'Login']; 
-        }  
-
-        //NB: only required for shopping cart link
-        if($shop_setup) {
-            $temp_token = $user->getTempToken(false);
-            if($temp_token !== '') {
-                $cart = ShopHelpers::getCart($db,TABLE_PREFIX_SHOP,$temp_token);
-                if($cart !==0 ) {
-                    $no_items = '';
-                    if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
-                    $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
+                //delete user session,tokens,cookies and send to home page
+                if(!$valid) {
+                    $user->manageUserAction('LOGOUT');
+                    return $response->withRedirect('/'.$redirect_route);
                 }    
-            }
-        } 
+            } else {
+                //no user logged in
+                $menu_options['append'] = ['/public/register'=>'Register','/login'=>'Login']; 
+            }  
 
-        if($auction_setup) {
-            $temp_token = $user->getTempToken(false);
-            if($temp_token !== '') {
-                $cart = AuctionHelpers::getCart($db,TABLE_PREFIX_AUCTION,$temp_token);
-                if($cart !==0 ) {
-                    $no_items = '';
-                    if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
-                    $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
-                }    
+            //NB: only required for shopping cart link
+            if($shop_setup) {
+                $temp_token = $user->getTempToken(false);
+                if($temp_token !== '') {
+                    $cart = ShopHelpers::getCart($db,TABLE_PREFIX_SHOP,$temp_token);
+                    if($cart !==0 ) {
+                        $no_items = '';
+                        if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
+                        $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
+                    }    
+                }
+            } 
+
+            if($auction_setup) {
+                $temp_token = $user->getTempToken(false);
+                if($temp_token !== '') {
+                    $cart = AuctionHelpers::getCart($db,TABLE_PREFIX_AUCTION,$temp_token);
+                    if($cart !==0 ) {
+                        $no_items = '';
+                        if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
+                        $menu_options['append']['/public/cart'] = '<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>';
+                    }    
+                }
             }
-        }      
+        }          
         
         //menu logo, defined in setup_app.php
         if(defined('WWW_MENU_LOGO')) $logo = WWW_MENU_LOGO; else $logo = '';
