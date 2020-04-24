@@ -19,14 +19,16 @@ use Seriti\Tools\BASE_PATH;
 use Seriti\Tools\BASE_TEMPLATE;
 use Seriti\Tools\BASE_URL;
 
+//Shop specific
 use App\Shop\ProductList;
-//use App\Shop\AccountDashboard;
+use App\Shop\AccountDashboard;
 
+/* Auction specific
 use App\Auction\LotList;
 use App\Auction\AuctionImageList;
 use App\Auction\AuctionDocumentList;
 use App\Auction\AccountDashboard;
-
+*/
 
 use App\Website\RegisterWizard;
 

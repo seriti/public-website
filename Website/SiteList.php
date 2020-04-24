@@ -55,13 +55,13 @@ class SiteList extends Listing
 
         $this->setupListImages(array('table'=>TABLE_PREFIX.'files','location'=>'WPI','max_no'=>100,'manage'=>false,
                                      'list'=>true,'list_no'=>1,'storage'=>'local','path'=>BASE_UPLOAD_WWW,
-                                     'link_page'=>'page_image','link_data'=>'SIMPLE','width'=>'700','height'=>'600'));
+                                     'link_url'=>'page_image','link_data'=>'SIMPLE','width'=>'700','height'=>'600'));
 
         /*                          
         $this->setupListFiles(array('table'=>TABLE_PREFIX.'files','location'=>'WPF','max_no'=>100,
                                 'icon'=>'<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;manage',
                                 'list'=>false,'list_no'=>1,'storage'=>STORAGE_WWW,
-                                'link_page'=>'page_file','link_data'=>'SIMPLE','width'=>'700','height'=>'600'));
+                                'link_url'=>'page_file','link_data'=>'SIMPLE','width'=>'700','height'=>'600'));
         */
 
         

@@ -36,8 +36,8 @@ class ConfigPublic
      */
     public function __invoke($request, $response, $next)
     {
-        $shop_setup = false;
-        $auction_setup = true;
+        $shop_setup = true;
+        $auction_setup = false;
 
         $user = $this->container->user;
         $db = $this->container->mysql;
@@ -48,6 +48,7 @@ class ConfigPublic
         if($shop_setup) {
            $module_shop = $this->container->config->get('module','shop');
            define('TABLE_PREFIX_SHOP',$module_shop['table_prefix']); 
+           define('SHOP_ORDER_NAME',$module_shop['labels']['order']);
         }
 
         if($auction_setup) {
@@ -108,7 +109,7 @@ class ConfigPublic
                 if($cart !==0 ) {
                     $no_items = '';
                     if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
-                    $menu_options['icons'][] = ['id'=>'menu_cart','url'=>'/public/cart','value'=>'<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>'];
+                    $menu_options['icons'][] = ['id'=>'menu_cart','class'=>'menu_icon','url'=>'/public/cart','value'=>'<span class="glyphicon glyphicon-shopping-cart">'.$no_items.'</span>'];
                 }  else {
                     //cart empty but needed for javascript display:inline when [Add to Order] and before next refresh 
                     $menu_options['icons'][] = ['id'=>'menu_cart','class'=>'menu_icon display_hidden','url'=>'/public/cart','value'=>'<span class="glyphicon glyphicon-shopping-cart"></span>'];
