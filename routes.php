@@ -21,7 +21,7 @@ $app->group('/admin', function () {
         $this->post('/ajax', \App\Website\Ajax::class);
     })->add(\App\Website\Config::class);
 
-})->add(\App\ConfigAdmin::class);
+})->add(\App\User\ConfigAdmin::class);;
 //*** END admin access ***
 
 /*
