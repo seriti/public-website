@@ -20,10 +20,13 @@ use Seriti\Tools\BASE_TEMPLATE;
 use Seriti\Tools\BASE_URL;
 
 //Shop specific
+/*
 use App\Shop\ProductList;
 use App\Shop\AccountDashboard;
+*/
 
-/* Auction specific
+//Auction specific 
+/*
 use App\Auction\LotList;
 use App\Auction\AuctionImageList;
 use App\Auction\AuctionDocumentList;

@@ -105,8 +105,8 @@ class RegisterWizard extends Wizard
         
         //PROCESS additional info required
         if($this->page_no == 2) {
-            $shop = $this->container->config->get('module','shop');
-            $table_extend = $shop['table_prefix'].'user_extend';  
+            //defined in ConfigPublic depending on active module
+            $table_extend = TABLE_USER_EXTEND;
 
             $data = [];
             $data['user_id'] = $this->data['user_id'];

@@ -36,7 +36,7 @@ class ConfigPublic
      */
     public function __invoke($request, $response, $next)
     {
-        $shop_setup = true;
+        $shop_setup = false;
         $auction_setup = false;
 
         $user = $this->container->user;
@@ -45,16 +45,17 @@ class ConfigPublic
         $module = $this->container->config->get('module','website');
         define('TABLE_PREFIX',$module['table_prefix']);
 
+        //TABLE_USER_EXTEND required for user registration
         if($shop_setup) {
            $module_shop = $this->container->config->get('module','shop');
-           define('TABLE_PREFIX_SHOP',$module_shop['table_prefix']); 
-           define('SHOP_ORDER_NAME',$module_shop['labels']['order']);
+           define('MODULE_SHOP',$module_shop);
+           define('TABLE_USER_EXTEND',$module_shop['table_prefix'].'user_extend');
         }
 
         if($auction_setup) {
            $module_auction = $this->container->config->get('module','auction');
-           define('TABLE_PREFIX_AUCTION',$module_auction['table_prefix']); 
-           define('AUCTION_ORDER_NAME',$module_auction['labels']['order']); 
+           define('MODULE_AUCTION',$module_auction);
+           define('TABLE_USER_EXTEND',$module_auction['table_prefix'].'user_extend');
         }
         
         $route_root = $module['route_root_page'];
@@ -105,7 +106,7 @@ class ConfigPublic
         if($shop_setup) {
             $temp_token = $user->getTempToken(false);
             if($temp_token !== '') {
-                $cart = ShopHelpers::getCart($db,TABLE_PREFIX_SHOP,$temp_token);
+                $cart = ShopHelpers::getCart($db,MODULE_SHOP['table_prefix'],$temp_token);
                 if($cart !==0 ) {
                     $no_items = '';
                     if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
@@ -120,7 +121,7 @@ class ConfigPublic
         if($auction_setup) {
             $temp_token = $user->getTempToken(false);
             if($temp_token !== '') {
-                $cart = AuctionHelpers::getCart($db,TABLE_PREFIX_AUCTION,$temp_token);
+                $cart = AuctionHelpers::getCart($db,MODULE_AUCTION['table_prefix'],$temp_token);
                 if($cart !==0 ) {
                     $no_items = '';
                     if($cart['item_count'] !==0 ) $no_items = $cart['item_count'];
