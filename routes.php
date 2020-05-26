@@ -36,6 +36,7 @@ $app->group('/public', function () {
     $this->redirect('', '/public/home', 301);
     $this->redirect('/', 'home', 301);
  
+    $this->any('/download', \App\Website\PageDownloadController::class);
     $this->any('/help', \App\Website\PublicHelpController::class);
     $this->any('/register', \App\Website\RegisterWizardController::class);
     $this->any('/logout', \App\Website\LogoutController::class);

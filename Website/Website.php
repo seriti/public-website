@@ -184,7 +184,7 @@ class Website
                 $files_html .= '<ul>';
                 foreach($files as $file_id => $file) {
                     $href = 'download?id='.$file_id;
-                    $files_html .= '<li><a href="'.$href.'">'.
+                    $files_html .= '<li><a href="'.$href.'" target="_blank">'.
                                     '<span class="glyphicon glyphicon-cloud-download"></span>&nbsp;'.
                                      $file['file_name_orig'].'</a> <i>('.Calc::displayBytes($file['file_size']).')</i></li>';
                 }  

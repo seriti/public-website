@@ -32,7 +32,7 @@ class Config
         $menu = $this->container->menu;
         
         //need local copies of files for website
-        define('STORAGE_WWW','local');
+        if(!defined('STORAGE_WWW')) define('STORAGE_WWW','local');
         define('TABLE_PREFIX',$module['table_prefix']);
         define('MODULE_ID','WEBSITE');
         define('MODULE_LOGO','<img src="'.BASE_URL.'images/customise40.png"> ');
