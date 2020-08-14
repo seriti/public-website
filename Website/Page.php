@@ -47,6 +47,8 @@ class Page extends Table
         $this->addTableCol(array('id'=>'type_id','type'=>'STRING','title'=>'Page type'));
         $this->addTableCol(array('id'=>'title','type'=>'STRING','title'=>'Page title','hint'=>'This appears at top of the page in large font'));
         $this->addTableCol(array('id'=>'page_access','type'=>'STRING','title'=>'Access required','required'=>true,'new'=>'NONE','hint'=>'Set minimium user access level required'));
+        $this->addTableCol(array('id'=>'menu','type'=>'STRING','linked'=>'EMPTY','title'=>'Menu title'));
+
         $this->addTableCol(array('id'=>'text_markdown','type'=>'TEXT','secure'=>false,'title'=>'Page text','rows'=>20,
                             'hint'=>'Uses <a href="http://parsedown.org/tests/" target="_blank">parsedown</a> extended <a href="https://www.markdownguide.org/basic-syntax" target="_blank">markdown</a> format, or raw html','list'=>false));
         $this->addTableCol(array('id'=>'meta_title','type'=>'STRING','title'=>'SEO-Meta title','max'=>250,'required'=>true));
@@ -56,7 +58,7 @@ class Page extends Table
         $this->addTableCol(array('id'=>'meta_desc','type'=>'STRING','title'=>'SEO-Meta description','max'=>250,'required'=>false,'list'=>false));
         $this->addTableCol(array('id'=>'status','type'=>'STRING','title'=>'Status','hint'=>'You can have multiple HOME pages which are randomly selected from'));
 
-        $this->addSortOrder('T.status,T.type_id,T.title','Status, Type then Title','DEFAULT');
+        //$this->addSortOrder('T.status,T.type_id,T.title','Status, Type then Title','DEFAULT');
 
         $this->addAction(array('type'=>'check_box','text'=>''));
         $this->addAction(array('type'=>'edit','text'=>'edit','icon_text'=>'edit'));
@@ -88,13 +90,35 @@ class Page extends Table
     protected function modifyRowValue($col_id,$data,&$value) 
     {
         if($col_id === 'type_id') {
-            $test_link = '<a href="/?page='.$data['page_id'].'" target="_blank">'.
+            $route = $this->route_root_page.$data['link_url'];
+            $test_link = '<a href="/'.$route.'" target="_blank">'.
                          '<span class="glyphicon glyphicon-eye-open"></span>&nbsp;test</a>';
             $value = $test_link.': '.PAGE_TYPE[$value];
         }  
         
         if($col_id === 'page_id') {
             $value = $value.': [link](?page='.$value.')';
+        } 
+
+        if($col_id === 'menu') {
+            $page_link = '(?page='.$data['page_id'].')';
+            $menu_route = $this->route_root_page.$data['link_url'];
+            $sql = 'SELECT title FROM '.TABLE_PREFIX.'menu '.
+                   'WHERE menu_type =  "LINK_PAGE" AND menu_link = "'.$this->db->escapeSql($menu_route).'" ';
+            $menu_title = $this->db->readSqlValue($sql,0);
+
+            if($menu_title !== 0) {
+                $value = '"<strong>'.$menu_title.'</strong>"<br/>';
+            } else {
+                $value = 'Not on menu.<br/>';
+            }
+
+            $sql = 'SELECT GROUP_CONCAT(page_id) FROM '.TABLE_PREFIX.'page '.
+                   'WHERE text_markdown LIKE "%'. $page_link.'%" '.
+                   'ORDER BY page_id ';
+            $page_link = $this->db->readSqlValue($sql,'');
+            if($page_link !== '') $value .= 'Linked from page ID: '.$page_link;
+
         }  
     } 
   

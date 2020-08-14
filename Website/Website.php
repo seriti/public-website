@@ -177,7 +177,8 @@ class Website
             
             //get any documents associated with page
             $sql = 'SELECT file_id,file_name,file_name_tn,file_name_orig,file_size,title,description '.
-                   'FROM '.TABLE_PREFIX.'files WHERE location_id = "WPF'.$this->db->escapeSql($page_id).'" ';
+                   'FROM '.TABLE_PREFIX.'files WHERE location_id = "WPF'.$this->db->escapeSql($page_id).'" '.
+                   'ORDER BY location_rank, file_name_orig ';
             $files = $this->db->readSqlArray($sql);
             if($files != 0) {
                 $files_html .= '<h2>Download files:</h2>';
