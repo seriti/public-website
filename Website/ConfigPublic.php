@@ -36,7 +36,9 @@ class ConfigPublic
      */
     public function __invoke($request, $response, $next)
     {
+        //make true for modules you require
         $shop_setup = false;
+        $payment_setup = false;
         $auction_setup = false;
 
         $user = $this->container->user;
@@ -44,6 +46,7 @@ class ConfigPublic
 
         $module = $this->container->config->get('module','website');
         define('TABLE_PREFIX',$module['table_prefix']);
+        $route_root = $module['route_root_page'];
 
         //TABLE_USER_EXTEND required for user registration
         if($shop_setup) {
@@ -52,14 +55,17 @@ class ConfigPublic
            define('TABLE_USER_EXTEND',$module_shop['table_prefix'].'user_extend');
         }
 
+        if($payment_setup) {
+           $module_payment = $this->container->config->get('module','payment');
+           define('MODULE_PAYMENT',$module_payment);
+        }
+
         if($auction_setup) {
            $module_auction = $this->container->config->get('module','auction');
            define('MODULE_AUCTION',$module_auction);
            define('TABLE_USER_EXTEND',$module_auction['table_prefix'].'user_extend');
         }
-        
-        $route_root = $module['route_root_page'];
-
+       
         //NB: Public menu must be setup independently of container menu which is for /admin
         $menu_god = []; 
         $menu_options = [];
@@ -84,7 +90,10 @@ class ConfigPublic
             $menu_options['append'] = ['/public/logout'=>'Logout']; 
 
             $db->setAuditUserId($user->getId());
-            Secure::checkReferer(BASE_URL);
+            
+            //NB:If you enable this then links from other websites/servers will not work.
+            //Secure::checkReferer(BASE_URL);
+
             //user access level must be valid and >= minimum level
             $valid = $user->checkUserAccess($minimum_level);
 

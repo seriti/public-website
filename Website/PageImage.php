@@ -21,7 +21,8 @@ class PageImage extends Upload
                   'storage'=>STORAGE_WWW,
                   'upload_path_base'=>BASE_PATH,
                   'upload_path'=>BASE_UPLOAD_WWW,
-                  'prefix'=>$file_prefix];
+                  'prefix'=>$file_prefix,//will prefix file_name if used, but file_id.ext is unique 
+                  'upload_location'=>$id_prefix]; 
         parent::setup($param);
 
         //limit to web viewable images
