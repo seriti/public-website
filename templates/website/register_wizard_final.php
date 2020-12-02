@@ -21,11 +21,15 @@ $html .= '<div class="row"><div class="col-lg-12">'.
          '</div></div>';
 
 $html .= '<div class="row"><div class="col-lg-12">'.
-         'Ypour Alternative email: <strong>'.$form['email_alt'].'</strong>'.
+         'Your Cellphone number: <strong>'.$form['cell'].'</strong>'.
          '</div></div>';
 
 $html .= '<div class="row"><div class="col-lg-12">'.
-         'Your Cellphone number: <strong>'.$form['cell'].'</strong>'.
+         'Your Invoice name: <strong>'.$form['name_invoice'].'</strong>'.
+         '</div></div>';
+
+$html .= '<div class="row"><div class="col-lg-12">'.
+         'Your Alternative email: <strong>'.$form['email_alt'].'</strong>'.
          '</div></div>';
 
 $html .= '<div class="row"><div class="col-lg-12">'.

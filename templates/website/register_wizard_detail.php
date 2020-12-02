@@ -24,16 +24,21 @@ $html .= '<div class="row"><div class="col-lg-12">'.
          'Your auto-generated password: <strong>'.$data['password'].'</strong>'.
          '</div></div>';
 
-$html .= '<h2>Please capture additional information below:</h2>';
+$html .= '<h2>Please capture additional information below (<span class="star">*</span>required):</h2>';
+
+$html .= '<div class="row"><div class="col-lg-12">'.
+         '<span class="star">*</span>Name for invoicing:<br/>'.
+         Form::textInput('name_invoice',$form['name_invoice'],$input_param).
+         '</div></div>';
+
+$html .= '<div class="row"><div class="col-lg-12">'.
+         '<span class="star">*</span>Cellphone number:<br/>'.
+         Form::textInput('cell',$form['cell'],$input_param).
+         '</div></div>';
 
 $html .= '<div class="row"><div class="col-lg-12">'.
          'Alternative email address:<br/>'.
          Form::textInput('email_alt',$form['email_alt'],$input_param).
-         '</div></div>';
-
-$html .= '<div class="row"><div class="col-lg-12">'.
-         'Cellphone number:<br/>'.
-         Form::textInput('cell',$form['cell'],$input_param).
          '</div></div>';
 
 $html .= '<div class="row"><div class="col-lg-12">'.

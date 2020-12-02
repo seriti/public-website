@@ -38,7 +38,8 @@ class RegisterWizard extends Wizard
         $this->addVariable(array('id'=>'email_repeat','type'=>'EMAIL','title'=>'Your email address repeated'));
         
         //additional user information
-        $this->addVariable(array('id'=>'cell','type'=>'STRING','title'=>'Your cellphone number','required'=>false));
+        $this->addVariable(array('id'=>'name_invoice','type'=>'STRING','title'=>'Your invoice name','required'=>true));
+        $this->addVariable(array('id'=>'cell','type'=>'STRING','title'=>'Your cellphone number','required'=>true));
         $this->addVariable(array('id'=>'tel','type'=>'STRING','title'=>'Your landline number','required'=>false));
         $this->addVariable(array('id'=>'address','type'=>'TEXT','title'=>'Your postal address','required'=>false));
         $this->addVariable(array('id'=>'email_alt','type'=>'EMAIL','title'=>'Alternative Email address','required'=>false));
@@ -97,6 +98,8 @@ class RegisterWizard extends Wizard
                         $this->data['user_created'] = true;
                         $this->data['password'] = $password;
                         $this->data['user_id'] = $user[$this->user_cols['id']];
+                        //default for next page
+                        $this->form['name_invoice'] = $name;
                     }
                 }
             }    
@@ -110,6 +113,7 @@ class RegisterWizard extends Wizard
 
             $data = [];
             $data['user_id'] = $this->data['user_id'];
+            $data['name_invoice'] = $this->form['name_invoice'];
             $data['cell'] = $this->form['cell'];
             $data['tel'] = $this->form['tel'];
             $data['email_alt'] = $this->form['email_alt'];

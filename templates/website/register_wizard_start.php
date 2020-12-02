@@ -48,7 +48,7 @@ $html .= '</div>'.
          '<div class="col-lg-6">';        
                         
 $html .= '<div class="row"><div class="col-lg-12">'.
-         '<p><b>NB1:</b> A secure password will be auto-generated and emailed to you.</p>'.
+         '<p><b>NB1:</b> A secure password will be auto-generated and emailed to you. You can reset password at your next login if you would like to change it.</p>'.
          '<p><b>NB2:</b> Every user must have a unique email address. You cannot register twice with the same email address.</p>'.
          '</div></div>';       
         

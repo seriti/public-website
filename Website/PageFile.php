@@ -37,6 +37,7 @@ class PageFile extends Upload
 
         $this->addSortOrder($this->file_cols['location_rank'],'Location Rank','DEFAULT');
 
+        $this->addAction('check_box');
         $this->addAction('edit');
         $this->addAction('delete');
 

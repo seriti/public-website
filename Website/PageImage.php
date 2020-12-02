@@ -37,6 +37,7 @@ class PageImage extends Upload
         $param['show_sql'] = 'SELECT CONCAT("Page: ",title) FROM '.TABLE_PREFIX.'page WHERE page_id = "{KEY_VAL}"';
         $this->setupMaster($param);
 
+        $this->addAction('check_box');
         $this->addAction('delete');
 
         //$this->setupImages($param);
