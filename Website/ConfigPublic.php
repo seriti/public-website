@@ -40,6 +40,7 @@ class ConfigPublic
         $shop_setup = false;
         $payment_setup = false;
         $auction_setup = false;
+        $reserve_setup = false;
 
         $user = $this->container->user;
         $db = $this->container->mysql;
@@ -53,6 +54,12 @@ class ConfigPublic
            $module_shop = $this->container->config->get('module','shop');
            define('MODULE_SHOP',$module_shop);
            define('TABLE_USER_EXTEND',$module_shop['table_prefix'].'user_extend');
+        }
+
+        if($reserve_setup) {
+           $module_reserve = $this->container->config->get('module','reserve');
+           define('MODULE_RESERVE',$module_reserve);
+           define('TABLE_USER_EXTEND',$module_reserve['table_prefix'].'user_extend');
         }
 
         if($payment_setup) {

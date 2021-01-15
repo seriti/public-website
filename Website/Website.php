@@ -25,6 +25,12 @@ use App\Shop\ProductList;
 use App\Shop\AccountDashboard;
 */
 
+//Reserve specific
+/*
+use App\Reserve\PackageList;
+use App\Reserve\AccountDashboard;
+*/
+
 //Auction specific 
 /*
 use App\Auction\LotList;
@@ -283,6 +289,24 @@ class Website
             
             if($mask_arr[1] === 'SHOP_CATEGORY') $insert_html = $this->insert[$key]->viewSearchIndex('SELECT','category_id',$_POST);
             if($mask_arr[1] === 'SHOP_PRODUCTS') $insert_html = $this->insert[$key]->processList();
+        }
+
+        //{INSERT:RESERVE_XXX:CAT}
+        if(strpos($mask_arr[1],'RESERVE') !== false) {
+            if(count($mask_arr) > 2) {
+                $category_id = $mask_arr[2];
+            } else {
+                $category_id = '';
+            }    
+            $key = 'RESERVE'.$category_id;
+            if(!isset($this->insert[$key])) {
+                $table_name = 'res_package';
+                $this->insert[$key] = new PackageList($this->db,$this->container,$table_name);
+                $this->insert[$key]->setup([]);
+            }
+            
+            if($mask_arr[1] === 'RESERVE_CATEGORY') $insert_html = $this->insert[$key]->viewSearchIndex('SELECT','category_id',$_POST);
+            if($mask_arr[1] === 'RESERVE_PACKAGES') $insert_html = $this->insert[$key]->processList();
         }
 
         //{INSERT:ACCOUNT_XXX}
