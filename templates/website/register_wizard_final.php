@@ -45,8 +45,8 @@ $html .= '</div>'.
                         
 $html .= '<p><strong>You are registered and logged in!</strong></p>'.
          '<p><strong>Please use menu above to continue navigating site.</strong></p>'.
-         '<p>Your current login should last for 30 days from this device unless you logout or delete site cookies.</p>';
-         '<p>If you forget your password, do not worry. You can at any point request a password reset or login token to be emailed to you from login screen.</p>';
+         '<p>Your current login should last for '.$data['days_expire'].' days from this device unless you logout or delete site cookies.</p>';
+         '<p>If you forget your password, do not worry. You can at any point request a password reset from login page.</p>';
         
 $html .= '</div>'.
          '</div>';      

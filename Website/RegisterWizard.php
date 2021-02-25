@@ -21,6 +21,7 @@ use Seriti\Tools\TABLE_USER;
 class RegisterWizard extends Wizard 
 {
     protected $user;
+    protected $login_expire_days = 30;
 
     //configure
     public function setup($param = []) 
@@ -31,6 +32,8 @@ class RegisterWizard extends Wizard
         $param['strict_var'] = false;
         $param['csrf_token'] = $this->user->getTempToken();
         parent::setup($param);
+
+        if(defined('LOGIN_EXPIRE_DAYS')) $this->login_expire_days = LOGIN_EXPIRE_DAYS;
 
         //standard user cols
         $this->addVariable(array('id'=>'name','type'=>'STRING','title'=>'Your name','required'=>true));
@@ -92,12 +95,13 @@ class RegisterWizard extends Wizard
                     } else {
                         $user = $this->user->getUser('EMAIL',$email);
                         $remember_me = true;
-                        $days_expire = 30;
+                        $days_expire = $this->login_expire_days;
                         $this->user->manageUserAction('LOGIN_REGISTER',$user,$remember_me,$days_expire);
                         
                         $this->data['user_created'] = true;
                         $this->data['password'] = $password;
                         $this->data['user_id'] = $user[$this->user_cols['id']];
+                        $this->data['days_expire'] = $days_expire;
                         //default for next page
                         $this->form['name_invoice'] = $name;
                     }
