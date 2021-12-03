@@ -44,7 +44,7 @@ class SiteList extends Listing
         //$this->addListCol(array('id'=>'meta_desc','type'=>'STRING','title'=>'SEO-Meta description','max'=>250,'required'=>false));
         //$this->addListCol(array('id'=>'status','type'=>'STRING','title'=>'Status','hint'=>'You can have multiple HOME pages which are randomly selected from'));
 
-        $this->addSortOrder('T.status,T.type_id,T.title','Status, Type then Title','DEFAULT');
+        $this->addSortOrder('T.`status`,T.`type_id`,T.`title`','Status, Type then Title','DEFAULT');
 
         //$this->addListAction(array('type'=>'edit','text'=>'edit','icon_text'=>'edit'));
         

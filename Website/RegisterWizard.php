@@ -76,8 +76,8 @@ class RegisterWizard extends Wizard
                             
                 if($email !== $email_repeat) $this->addError('Email repeat['.$email_repeat.'] not same as email['.$email.']');
                 
-                $sql = 'SELECT * FROM '.TABLE_USER.' '.
-                       'WHERE '.$this->user_cols['email'].' = "'.$this->db->escapeSql($email).'" ';
+                $sql = 'SELECT * FROM `'.TABLE_USER.'` '.
+                       'WHERE `'.$this->user_cols['email'].'` = "'.$this->db->escapeSql($email).'" ';
                 $existing_user = $this->db->readSqlRecord($sql);
                 if($existing_user !== 0) {
                    $this->addError('Email ['.$email.'] already allocated to another user.'); 

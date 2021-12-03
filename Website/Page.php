@@ -58,7 +58,7 @@ class Page extends Table
         $this->addTableCol(array('id'=>'meta_desc','type'=>'STRING','title'=>'SEO-Meta description','max'=>250,'required'=>false,'list'=>false));
         $this->addTableCol(array('id'=>'status','type'=>'STRING','title'=>'Status','hint'=>'You can have multiple HOME pages which are randomly selected from'));
 
-        //$this->addSortOrder('T.status,T.type_id,T.title','Status, Type then Title','DEFAULT');
+        //$this->addSortOrder('T.`status`,T.`type_id`,T.`title`','Status, Type then Title','DEFAULT');
 
         $this->addAction(array('type'=>'check_box','text'=>''));
         $this->addAction(array('type'=>'edit','text'=>'edit','icon_text'=>'edit'));

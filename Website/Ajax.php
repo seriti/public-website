@@ -39,8 +39,8 @@ class Ajax
 
         $module = $this->container->config->get('module','website');  
 
-        $sql = 'SELECT CONCAT("'.$module['route_root_page'].'",link_url),title FROM '.TABLE_PREFIX.'page '.
-               'WHERE status = "OK" OR status = "HOME" ORDER BY title';
+        $sql = 'SELECT CONCAT("'.$module['route_root_page'].'",`link_url`),`title` FROM `'.TABLE_PREFIX.'page` '.
+               'WHERE `status` = "OK" OR `status` = "HOME" ORDER BY `title`';
         $my_pages = $this->db->readSqlList($sql);
           
         $links = [];
