@@ -8,7 +8,7 @@ use Seriti\Tools\Html;
 class Help extends Table 
 {
     //configure
-    public function setup() 
+    public function setup($param = []) 
     {
         $param = ['row_name'=>'Help topic','col_label'=>'title'];
         parent::setup($param);
@@ -24,7 +24,7 @@ class Help extends Table
         $this->addTableCol(array('id'=>'access','type'=>'STRING','title'=>'User access minimum','new'=>'USER'));
         $this->addTableCol(array('id'=>'status','type'=>'STRING','title'=>'Status'));
         
-        $this->addSortOrder('rank','By ranking number','DEFAULT');
+        $this->addSortOrder('T.`rank`','By ranking number','DEFAULT');
 
         //$this->addAction(array('type'=>'check_box','text'=>''));
         $this->addAction(array('type'=>'edit','text'=>'edit','icon_text'=>'edit'));
@@ -45,8 +45,8 @@ class Help extends Table
         $text = $form['text_markdown'];
         if($text !== '') {
             $html = Html::markdownToHtml($text);  
-            $sql='UPDATE '.$this->table.' SET text_html = "'.$this->db->escapeSql($html).'" '.
-                 'WHERE id = "'.$this->db->escapeSql($id).'"';
+            $sql='UPDATE `'.$this->table.'` SET `text_html` = "'.$this->db->escapeSql($html).'" '.
+                 'WHERE `id` = "'.$this->db->escapeSql($id).'"';
             $this->db->executeSql($sql,$error);
             if($error !== '') throw new Exception('CUSTOM_HELP: could not convert markdown into HTML');
         }  

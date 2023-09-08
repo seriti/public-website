@@ -95,12 +95,12 @@ class Website
         
         //get page id from url after "public/" base
         $link_url = $param['link_url'];
-        $sql = 'SELECT page_id FROM '.TABLE_PREFIX.'page WHERE link_url = "'.$this->db->escapeSql($link_url).'" ';
+        $sql = 'SELECT `page_id` FROM `'.TABLE_PREFIX.'page` WHERE `link_url` = "'.$this->db->escapeSql($link_url).'" ';
         $page_id = $this->db->readSqlValue($sql,0);
 
         if($page_id == 0) {
-            $sql = 'SELECT page_id,link_url FROM '.TABLE_PREFIX.'page WHERE status = "HOME" OR status = "OK" '.
-                   'ORDER BY status, RAND() LIMIT 1 ';
+            $sql = 'SELECT `page_id`,`link_url` FROM `'.TABLE_PREFIX.'page` WHERE `status` = "HOME" OR `status` = "OK" '.
+                   'ORDER BY `status`, RAND() LIMIT 1 ';
             $home = $this->db->readSqlRecord($sql,0); 
             $page_id = $home['page_id'];
             $link_url = $home['link_url']; 
@@ -113,8 +113,8 @@ class Website
             $page['title'] = 'No pages setup yet!';
             $page['text_html'] = '<p>You have not configured any pages for your website yet.</p>';
         } else {
-            $sql = 'SELECT page_id,title,page_access,text_html,type_id,status,meta_key,meta_title,meta_desc '.
-                   'FROM '.TABLE_PREFIX.'page WHERE  page_id = "'.$this->db->escapeSql($page_id).'" ';
+            $sql = 'SELECT `page_id`,`title`,`page_access`,`text_html`,`type_id`,`status`,`meta_key`,`meta_title`,`meta_desc` '.
+                   'FROM `'.TABLE_PREFIX.'page` WHERE `page_id` = "'.$this->db->escapeSql($page_id).'" ';
             $page = $this->db->readSqlRecord($sql); 
             if($page === 0) {
                 $page_valid = false;
@@ -151,8 +151,8 @@ class Website
             $this->insertPageContent($page);
 
             //get any images associated with page
-            $sql = 'SELECT file_id,file_name,file_name_tn,title,description '.
-                   'FROM '.TABLE_PREFIX.'files WHERE location_id = "WPI'.$this->db->escapeSql($page_id).'" ';
+            $sql = 'SELECT `file_id`,`file_name`,`file_name_tn`,`title`,`description` '.
+                   'FROM `'.TABLE_PREFIX.'files` WHERE `location_id` = "WPI'.$this->db->escapeSql($page_id).'" ';
             $images = $this->db->readSqlArray($sql);
             if($images != 0) {
                 if(count($images) == 1) {
@@ -182,9 +182,9 @@ class Website
             }   
             
             //get any documents associated with page
-            $sql = 'SELECT file_id,file_name,file_name_tn,file_name_orig,file_size,title,description '.
-                   'FROM '.TABLE_PREFIX.'files WHERE location_id = "WPF'.$this->db->escapeSql($page_id).'" '.
-                   'ORDER BY location_rank, file_name_orig ';
+            $sql = 'SELECT `file_id`,`file_name`,`file_name_tn`,`file_name_orig`,`file_size`,`title`,`description` '.
+                   'FROM `'.TABLE_PREFIX.'files` WHERE `location_id` = "WPF'.$this->db->escapeSql($page_id).'" '.
+                   'ORDER BY `location_rank`, `file_name_orig` ';
             $files = $this->db->readSqlArray($sql);
             if($files != 0) {
                 $files_html .= '<h2>Download files:</h2>';

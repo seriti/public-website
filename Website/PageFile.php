@@ -30,7 +30,7 @@ class PageFile extends Upload
         $param['label']     = 'title';
         $param['child_col'] = 'location_id';
         $param['child_prefix'] = $id_prefix ;
-        $param['show_sql'] = 'SELECT CONCAT("Page: ",title) FROM '.TABLE_PREFIX.'page WHERE page_id = "{KEY_VAL}"';
+        $param['show_sql'] = 'SELECT CONCAT("Page: ",`title`) FROM `'.TABLE_PREFIX.'page` WHERE `page_id` = "{KEY_VAL}"';
         $this->setupMaster($param);
 
         $this->addFileCol(['id'=>$this->file_cols['location_rank'],'title'=>'Location rank','type'=>'INTEGER','list'=>true,'update'=>true,'upload'=>true]);

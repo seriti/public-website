@@ -34,7 +34,7 @@ class PageImage extends Upload
         $param['label']     = 'title';
         $param['child_col'] = 'location_id';
         $param['child_prefix'] = $id_prefix ;
-        $param['show_sql'] = 'SELECT CONCAT("Page: ",title) FROM '.TABLE_PREFIX.'page WHERE page_id = "{KEY_VAL}"';
+        $param['show_sql'] = 'SELECT CONCAT("Page: ",`title`) FROM `'.TABLE_PREFIX.'page` WHERE `page_id` = "{KEY_VAL}"';
         $this->setupMaster($param);
 
         $this->addAction('check_box');
