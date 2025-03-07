@@ -13,4 +13,5 @@ $container['config']->set('module','website',['name'=>'Website public',
                                              'table_prefix'=>'www_',
                                              'route_root_page'=>'public/',
                                              'route_root_account'=>'public/account/',
+                                             'user_register'=>false
                                             ]);
